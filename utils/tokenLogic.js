@@ -67,9 +67,12 @@ export async function getBalance(userId) {
 }
 
 async function assertBalance(userId, amount) {
-  const { balance } = await getBalance(userId);
-  if (balance < amount) {
-    throw new Error("Insufficient tokens");
+  const { balance, escrow } = await getBalance(userId);
+  const available = balance - escrow;
+  if (available < amount) {
+    throw new Error(
+      `Insufficient tokens. Required: ${amount} TBM, Available: ${available} TBM (Balance: ${balance} TBM, Escrowed: ${escrow} TBM)`
+    );
   }
 }
 

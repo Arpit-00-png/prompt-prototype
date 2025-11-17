@@ -22,7 +22,16 @@ export async function handleTaskAssign({ user, body }) {
   }
 
   if (task.reward > 0) {
-    await escrowTokens(task.created_by, task.reward, task.id);
+    try {
+      await escrowTokens(task.created_by, task.reward, task.id);
+    } catch (error) {
+      if (error.message && error.message.includes("Insufficient tokens")) {
+        throw new Error(
+          `Task creator does not have enough tokens to escrow the reward of ${task.reward} TBM. ${error.message}`
+        );
+      }
+      throw error;
+    }
   }
 
   const { error: updateError } = await supabaseAdmin
