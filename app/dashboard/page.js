@@ -77,6 +77,52 @@ export default function DashboardPage() {
     load();
   }, [router, fetchProfile, fetchTasks]);
 
+  // Set up real-time subscription for tasks (user-specific updates)
+  useEffect(() => {
+    let userId = null;
+    let channel = null;
+
+    const setupSubscription = async () => {
+      const {
+        data: { session }
+      } = await supabase.auth.getSession();
+      userId = session?.user?.id;
+      if (!userId) return;
+
+      channel = supabase
+        .channel("dashboard-tasks-changes")
+        .on(
+          "postgres_changes",
+          {
+            event: "*",
+            schema: "public",
+            table: "tasks"
+          },
+          (payload) => {
+            // Check if the change affects this user's tasks
+            const task = payload.new || payload.old;
+            if (
+              task &&
+              (task.created_by === userId || task.assigned_to === userId)
+            ) {
+              console.log("Dashboard task change received:", payload);
+              // Refetch tasks when any change occurs
+              fetchTasks(userId);
+            }
+          }
+        )
+        .subscribe();
+    };
+
+    setupSubscription();
+
+    return () => {
+      if (channel) {
+        supabase.removeChannel(channel);
+      }
+    };
+  }, [fetchTasks]);
+
   return (
     <div className="space-y-8">
       <section className="grid gap-6 lg:grid-cols-2">

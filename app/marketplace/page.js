@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import TaskCard from "../../components/TaskCard";
 import { supabase } from "../../lib/supabaseClient";
@@ -13,6 +13,25 @@ export default function MarketplacePage() {
   const [loading, setLoading] = useState(true);
   const [form, setForm] = useState({ title: "", description: "", reward: 0 });
   const [message, setMessage] = useState("");
+
+  const fetchProfile = async (userId) => {
+    const { data } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", userId)
+      .single();
+    setProfile(data);
+  };
+
+  const fetchTasks = useCallback(async () => {
+    setLoading(true);
+    const { data } = await supabase
+      .from("tasks")
+      .select("*")
+      .order("created_at", { ascending: false });
+    setTasks(data || []);
+    setLoading(false);
+  }, []);
 
   useEffect(() => {
     const load = async () => {
@@ -27,26 +46,31 @@ export default function MarketplacePage() {
       await Promise.all([fetchProfile(session.user.id), fetchTasks()]);
     };
     load();
-  }, [router]);
+  }, [router, fetchTasks]);
 
-  const fetchProfile = async (userId) => {
-    const { data } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", userId)
-      .single();
-    setProfile(data);
-  };
+  // Set up real-time subscription for tasks
+  useEffect(() => {
+    const channel = supabase
+      .channel("tasks-changes")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "tasks"
+        },
+        (payload) => {
+          console.log("Task change received:", payload);
+          // Refetch tasks when any change occurs
+          fetchTasks();
+        }
+      )
+      .subscribe();
 
-  const fetchTasks = async () => {
-    setLoading(true);
-    const { data } = await supabase
-      .from("tasks")
-      .select("*")
-      .order("created_at", { ascending: false });
-    setTasks(data || []);
-    setLoading(false);
-  };
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [fetchTasks]);
 
   const handleCreate = async (event) => {
     event.preventDefault();

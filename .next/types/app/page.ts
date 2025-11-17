@@ -1,4 +1,4 @@
-// File: C:\Users\legen\Desktop\GenAi\app\page.js
+// File: C:\Users\ADITYA\OneDrive\Desktop\prompt\prompt-prototype\app\page.js
 import * as entry from '../../../app/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

@@ -1,7 +1,12 @@
 {
-  "/page": "app/page.js",
-  "/auth/login/page": "app/auth/login/page.js",
   "/dashboard/page": "app/dashboard/page.js",
   "/api/tokens/balance/route": "app/api/tokens/balance/route.js",
-  "/buy-tokens/page": "app/buy-tokens/page.js"
+  "/marketplace/page": "app/marketplace/page.js",
+  "/buy-tokens/page": "app/buy-tokens/page.js",
+  "/rewards/page": "app/rewards/page.js",
+  "/api/rewards/catalog/route": "app/api/rewards/catalog/route.js",
+  "/api/tokens/purchase/route": "app/api/tokens/purchase/route.js",
+  "/api/rewards/redemptions/route": "app/api/rewards/redemptions/route.js",
+  "/stake/page": "app/stake/page.js",
+  "/api/tasks/assign/route": "app/api/tasks/assign/route.js"
 }

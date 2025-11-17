@@ -1,4 +1,4 @@
-// File: C:\Users\legen\Desktop\GenAi\app\layout.js
+// File: C:\Users\ADITYA\OneDrive\Desktop\prompt\prompt-prototype\app\layout.js
 import * as entry from '../../../app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
