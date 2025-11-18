@@ -1,4 +1,4 @@
-// File: C:\Users\ADITYA\OneDrive\Desktop\prompt\prompt-prototype\app\buy-tokens\page.js
+// File: C:\Users\ADITYA\OneDrive\Desktop\new10\prompt-prototype\app\buy-tokens\page.js
 import * as entry from '../../../../app/buy-tokens/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

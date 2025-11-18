@@ -1,4 +1,4 @@
-// File: C:\Users\ADITYA\OneDrive\Desktop\prompt\prompt-prototype\app\api\tokens\balance\route.js
+// File: C:\Users\ADITYA\OneDrive\Desktop\new10\prompt-prototype\app\api\tokens\balance\route.js
 import * as entry from '../../../../../../app/api/tokens/balance/route.js'
 import type { NextRequest } from 'next/server.js'
 

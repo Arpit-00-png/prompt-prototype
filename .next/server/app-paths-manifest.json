@@ -1,11 +1,7 @@
 {
+  "/page": "app/page.js",
   "/dashboard/page": "app/dashboard/page.js",
-  "/buy-tokens/page": "app/buy-tokens/page.js",
-  "/stake/page": "app/stake/page.js",
-  "/rewards/page": "app/rewards/page.js",
   "/api/tokens/balance/route": "app/api/tokens/balance/route.js",
-  "/marketplace/page": "app/marketplace/page.js",
-  "/api/rewards/catalog/route": "app/api/rewards/catalog/route.js",
-  "/api/rewards/redemptions/route": "app/api/rewards/redemptions/route.js",
+  "/buy-tokens/page": "app/buy-tokens/page.js",
   "/api/tokens/purchase/route": "app/api/tokens/purchase/route.js"
 }

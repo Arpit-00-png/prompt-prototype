@@ -75,9 +75,8 @@ export default function BuyTokensPage() {
         </p>
         <h1 className="text-3xl font-bold">Buy TBM tokens</h1>
         <p className="text-sm text-slate-300">
-          This prototype simulates payment capture. Submit the form to record a purchase,
-          mint TBM to your wallet, and log the order for sponsor invoicing. Later we can
-          plug in Razorpay or other PSPs.
+          Submit the form to record a purchase, mint TBM to your wallet, and log the order
+          for sponsor invoicing.
         </p>
         {message && (
           <p className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white">
