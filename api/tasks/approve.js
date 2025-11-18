@@ -26,6 +26,23 @@ export async function handleTaskApprove({ user, body }) {
       await releaseEscrow(task.assigned_to, task.reward, task.id);
     }
     await increaseReputation(task.assigned_to, task.reward || 1);
+    
+    // Reduce available hours from assignee's staked hours
+    const hoursToDeduct = task.estimated_hours || 1;
+    const { data: assigneeProfile, error: profileError } = await supabaseAdmin
+      .from("profiles")
+      .select("available_hours")
+      .eq("id", task.assigned_to)
+      .single();
+    
+    if (!profileError && assigneeProfile) {
+      const newAvailableHours = Math.max(0, (assigneeProfile.available_hours || 0) - hoursToDeduct);
+      await supabaseAdmin
+        .from("profiles")
+        .update({ available_hours: newAvailableHours })
+        .eq("id", task.assigned_to);
+    }
+    
     await supabaseAdmin
       .from("tasks")
       .update({ status: "completed" })

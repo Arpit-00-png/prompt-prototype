@@ -11,7 +11,7 @@ export default function MarketplacePage() {
   const [profile, setProfile] = useState(null);
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [form, setForm] = useState({ title: "", description: "", reward: 0 });
+  const [form, setForm] = useState({ title: "", description: "", reward: 0, estimatedHours: 1 });
   const [message, setMessage] = useState("");
 
   const fetchProfile = async (userId) => {
@@ -89,7 +89,7 @@ export default function MarketplacePage() {
       setMessage(data.error || "Unable to create task");
     } else {
       setMessage("Task published to marketplace");
-      setForm({ title: "", description: "", reward: 0 });
+      setForm({ title: "", description: "", reward: 0, estimatedHours: 1 });
       const {
         data: { session }
       } = await supabase.auth.getSession();
@@ -184,7 +184,28 @@ export default function MarketplacePage() {
               className="w-full rounded-2xl border border-white/10 bg-black/30 p-4 text-lg"
             />
           </label>
-          <button type="submit" className="btn-primary self-end">
+          <label className="text-sm">
+            <span className="mb-1 block text-xs uppercase tracking-wide text-slate-300">
+              Estimated Hours
+            </span>
+            <input
+              type="number"
+              min="1"
+              value={form.estimatedHours}
+              onChange={(event) =>
+                setForm((prev) => ({
+                  ...prev,
+                  estimatedHours: Number(event.target.value) || 1
+                }))
+              }
+              className="w-full rounded-2xl border border-white/10 bg-black/30 p-4 text-lg"
+              placeholder="1"
+            />
+            <p className="mt-1 text-xs text-slate-400">
+              Hours will be deducted from assignee's staked hours when approved
+            </p>
+          </label>
+          <button type="submit" className="btn-primary self-end md:col-span-2">
             Publish task
           </button>
         </form>
